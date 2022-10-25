@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Carousel } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getCarouselList } from "../../storeToolkit/quanLyPhim/quanLyPhimReducer";
+import { getCarouselList } from "../store/quanLyPhim/quanLyPhimReducer";
 
 const contentStyle = {
   height: "600px",

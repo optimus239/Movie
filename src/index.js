@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import { store } from "./storeToolkit/configStore";
+import { store } from "./store/configStore";
 //antd
 import "antd/dist/antd.css";
 //react-slick

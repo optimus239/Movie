@@ -13,13 +13,15 @@ const Footer = () => {
         <div>Liên hệ quảng cáo</div>
       </div>
       <div className="w-1/3">
+        <div className="text-stone-50 text-left ml-12">ĐIỀU KHOẢN SỬ DỤNG</div>
         <div className="text-stone-50 text-left ml-12">
-          Kết nối với chúng tôi
+          Điều khoản giao dịch
         </div>
-        <div className="text-stone-50 text-left ml-12">Facebook</div>
-        <div className="text-stone-50 text-left ml-12">Youtube</div>
-        <div className="text-stone-50 text-left ml-12">Tiktok</div>
-        <div className="text-stone-50 text-left ml-12">Website</div>
+        <div className="text-stone-50 text-left ml-12">
+          Chính sách thanh toán
+        </div>
+        <div className="text-stone-50 text-left ml-12">Chính sách bảo mật</div>
+        <div className="text-stone-50 text-left ml-12">Câu hỏi thường gặp</div>
       </div>
       <div className="w-1/3">
         <div className="flex">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Radio, Space, Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getCinemaList } from "../../../storeToolkit/quanLyPhim/quanLyPhimReducer";
+import { getCinemaList } from "../../store/quanLyPhim/quanLyPhimReducer";
 import "./Cinemas.css";
 import { render } from "react-dom";
 import "./Cinemas.css";

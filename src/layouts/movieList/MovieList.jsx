@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMovieList } from "../../../storeToolkit/quanLyPhim/quanLyPhimReducer";
+import { getMovieList } from "../../store/quanLyPhim/quanLyPhimReducer";
 import Slider from "react-slick";
-import styled from "styled-components";
 import styleSlick from "./MovieList.css";
 import { Card } from "antd";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const { Meta } = Card;
 
@@ -53,6 +52,7 @@ const MovieList = () => {
   const dispatch = useDispatch();
   const { movieList } = useSelector((state) => state.quanLyPhimReducer);
   console.log("movieList: ", movieList);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getMovieList());
@@ -73,6 +73,12 @@ const MovieList = () => {
             }
           >
             <Meta title={val.tenPhim} />
+            <button
+              className="mt-5"
+              onClick={() => navigate(`/detail/${val.maPhim}`)}
+            >
+              Chi tiết
+            </button>
           </Card>
         </div>
       ));
@@ -88,7 +94,7 @@ const MovieList = () => {
             });
           }}
         >
-          <p>NOW PLAYING</p>
+          <p>Đang chiếu</p>
         </button>
         <button
           className="btn-coming"
@@ -98,7 +104,7 @@ const MovieList = () => {
             });
           }}
         >
-          <p>COMING SOON</p>
+          <p>Sắp chiếu</p>
         </button>
       </div>
       <Slider {...settings}>{renderMovie()}</Slider>

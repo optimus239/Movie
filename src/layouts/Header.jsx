@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Header = () => {
@@ -38,7 +39,7 @@ const Header = () => {
                   href="#pablo"
                 >
                   <i className="text-lg text-white opacity-75"></i>
-                  <span className="ml-2">Home</span>
+                  <span className="ml-2">Trang chủ</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -47,7 +48,7 @@ const Header = () => {
                   href="#pablo"
                 >
                   <i className="text-lg text-white opacity-75"></i>
-                  <span className="ml-2">Movies</span>
+                  <span className="ml-2">Phim</span>
                 </a>
               </li>
               <li className="nav-item">
@@ -56,17 +57,17 @@ const Header = () => {
                   href="#pablo"
                 >
                   <i className="text-lg text-white opacity-75"></i>
-                  <span className="ml-2">Cinemas</span>
+                  <span className="ml-2">Rạp</span>
                 </a>
               </li>
             </ul>
           </div>
           <div className="flex">
             <button className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
-              Sign In
+              <Link to="/register">Đăng ký</Link>
             </button>
             <button className="ml-3 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
-              Sign Up
+              <Link to="/login">Đăng nhập</Link>
             </button>
           </div>
         </div>
