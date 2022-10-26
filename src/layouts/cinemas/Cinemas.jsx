@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Radio, Space, Tabs } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { getCinemaList } from "../../store/quanLyPhim/quanLyPhimReducer";
+import { getCinemaList } from "../../store/quanLyRap/quanLyRapReducer";
 import "./Cinemas.css";
 import { render } from "react-dom";
 import "./Cinemas.css";
@@ -13,7 +13,7 @@ const Cinemas = () => {
     dispatch(getCinemaList());
   }, []);
 
-  const { cinemaList } = useSelector((state) => state.quanLyPhimReducer);
+  const { cinemaList } = useSelector((state) => state.quanLyRapReducer);
   console.log("cinemaList: ", cinemaList);
   const [mode, setMode] = useState("left");
   const handleModeChange = (e) => {
