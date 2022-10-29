@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signUp, useQuanLyNguoiDung } from "../../store/quanLyNguoiDung";
 
 const Register = () => {
@@ -24,9 +24,13 @@ const Register = () => {
 
   const { userLogin } = useQuanLyNguoiDung();
 
-  if (userLogin) {
-    return <Navigate replace to="/home" />;
-  }
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userLogin) {
+      console.log("gì dọ");
+      navigate(-1);
+    }
+  }, [userLogin]);
   const onSubmit = (data) => {
     // console.log(data);
     dispatch(signUp(data));

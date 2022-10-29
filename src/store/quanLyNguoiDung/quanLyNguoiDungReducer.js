@@ -24,8 +24,9 @@ export const {
     logOut: (state) => {
       console.log("ê con dê");
       localStorage.removeItem("USER_LOGIN");
-      state.userLogin = {};
-      window.location.reload(false);
+      localStorage.removeItem("TOKEN");
+      state.userLogin = null;
+      // window.location.reload(false);
     },
   },
   // Xử lý những action bất đồng bộ (call API)
@@ -39,6 +40,10 @@ export const {
         state.isFetching = false;
         console.log(action.payload);
         localStorage.setItem("USER_LOGIN", JSON.stringify(action.payload));
+        localStorage.setItem(
+          "TOKEN",
+          JSON.stringify(action.payload.accessToken)
+        );
         state.userLogin = action.payload;
       })
       .addCase(login.rejected, (state, action) => {

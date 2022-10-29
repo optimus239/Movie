@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getMovieDetail } from "../../store/quanLyPhim/quanLyPhimReducer";
 import "./MovieDetail.css";
 import moment from "moment";
 import "../../assets/index";
 import { Tabs } from "antd";
 import { getShowTimes } from "../../store/quanLyRap/quanLyRapReducer";
+import { Rate } from "antd";
 
 const MovieDetail = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const MovieDetail = () => {
   const param = useParams();
   console.log("param: ", param.movieIds);
   console.log("movieDetail: ", movieDetail);
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getMovieDetail(param.movieIds));
   }, []);
@@ -29,10 +31,11 @@ const MovieDetail = () => {
   };
 
   return (
-    <div
-      className="container mx-auto h-[1200px] bg-center bg-cover bg-repeat opacity-70 relative"
-      style={{ backgroundImage: `url(${movieDetail?.hinhAnh})` }}
-    >
+    <div className="container mx-auto h-[1200px] relative ">
+      <div
+        className="bg-center bg-cover bg-repeat opacity-70 absolute w-full h-full blur-sm"
+        style={{ backgroundImage: `url(${movieDetail?.hinhAnh})` }}
+      ></div>
       <div className="bg-movieDetail p-5">
         <div className="flex mb-12">
           <div className="w-2/5 h-2/5 mr-3">
@@ -60,38 +63,58 @@ const MovieDetail = () => {
               </a>
             </button>
             <div className="clearfix">
-              <div className="c100 p25">
-                <span>{movieDetail?.danhGia}%</span>
+              <div className={`c100 p${movieDetail?.danhGia * 10}`}>
+                <span>{movieDetail?.danhGia * 10}%</span>
                 <div className="slice">
                   <div className="bar" />
                   <div className="fill" />
                 </div>
               </div>
+              <Rate allowHalf defaultValue={movieDetail?.danhGia / 2} />
             </div>
           </div>
         </div>
         <div className="tabShowtime">
+          <div className="text-2xl font-semibold text-gray-300 ">
+            <p className="decoration-solid underline-offset-8">Lịch chiếu</p>
+          </div>
           <Tabs
             defaultActiveKey="1"
             tabPosition={mode}
             style={{ height: 500 }}
             items={showTimesList?.heThongRapChieu.map((val, i) => {
               return {
-                label: <img src={val.logo} alt="" className="w-9 h-9" />,
+                label: (
+                  <img src={val.logo} alt="" className="w-9 h-9" key={i} />
+                ),
                 key: i,
                 children: val.cumRapChieu.map((item, i) => (
                   <div key={i}>
                     <div className="flex">
                       <div>
-                        <img src={item.hinhAnh} alt="" />
+                        <img src={item.hinhAnh} alt="" className="mb-5 mr-5" />
                       </div>
                       <div>
-                        <div>{item.tenCumRap}</div>
-                        <div>{item.diaChi}</div>
+                        <div className="text-neutral-50 text-xl mb-3">
+                          {item.tenCumRap}
+                        </div>
+                        <div className="text-neutral-50 text-lg mb-3">
+                          {item.diaChi}
+                        </div>
                         {item.lichChieuPhim.map((lichChieu, i) => (
-                          <div>
+                          <button
+                            className="text-neutral-50 mr-5"
+                            key={i}
+                            onClick={() => {
+                              if (localStorage.getItem("USER_LOGIN")) {
+                                return navigate(
+                                  `/ticketroom/${lichChieu.maLichChieu}`
+                                );
+                              } else navigate("/login");
+                            }}
+                          >
                             {moment(lichChieu.ngayChieuGioChieu).format("LT")}
-                          </div>
+                          </button>
                         ))}
                       </div>
                     </div>

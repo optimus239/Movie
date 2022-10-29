@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { logOut, useQuanLyNguoiDung } from "../store/quanLyNguoiDung";
 
 const Header = () => {
+  const { userLogin } = useQuanLyNguoiDung();
+  console.log("userLogin: ", userLogin);
   const [navbarOpen, setNavbarOpen] = useState(false);
   console.log("navbarOpen: ", navbarOpen);
+  const dispatch = useDispatch();
+  const dangXuat = () => {
+    dispatch(logOut());
+  };
+  const titleRef = useRef();
+  console.log("navbarOpen: ", navbarOpen);
+  const navigate = useNavigate();
   return (
     <>
-      <Navbar className="flex flex-wrap items-center justify-between px-2 py-5 bg-transparent fixed mb-3 z-10 w-full ">
+      <Navbar
+        className="flex flex-wrap items-center justify-between px-2 py-5 z-10 w-full"
+        style={{ backgroundColor: "rgb(33, 33, 33)" }}
+      >
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+          <Link
+            className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start"
+            to="/home"
+          >
             <a
               className="uppercase text-red-700 font-bold text-lg items-center"
               href="#pablo"
@@ -24,7 +41,7 @@ const Header = () => {
             >
               <i className="fas fa-bars"></i>
             </button>
-          </div>
+          </Link>
           <div
             className={
               "lg:flex flex-grow items-center" +
@@ -39,7 +56,9 @@ const Header = () => {
                   href="#pablo"
                 >
                   <i className="text-lg text-white opacity-75"></i>
-                  <span className="ml-2">Trang chủ</span>
+                  <Link className="ml-2" to="/home">
+                    Trang chủ
+                  </Link>
                 </a>
               </li>
               <li className="nav-item">
@@ -63,11 +82,21 @@ const Header = () => {
             </ul>
           </div>
           <div className="flex">
-            <button className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
-              <Link to="/register">Đăng ký</Link>
+            <button
+              className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Đăng ký
             </button>
-            <button className="ml-3 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75">
-              <Link to="/login">Đăng nhập</Link>
+            <button
+              className="ml-3 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Đăng nhập
             </button>
           </div>
         </div>
