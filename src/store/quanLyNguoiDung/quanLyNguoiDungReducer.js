@@ -12,6 +12,7 @@ const initialState = {
 
   isFetching: false,
   error: undefined,
+  customer: undefined,
 };
 export const {
   reducer: quanLyNguoiDungReducer,
@@ -79,6 +80,18 @@ export const {
           text: action.payload.content,
           footer: '<a href="">Xin cảm ơn</a>',
         });
+      })
+      .addCase(inforCustomer.pending, (state, action) => {
+        state.isFetching = true;
+      })
+      .addCase(inforCustomer.fulfilled, (state, action) => {
+        state.isFetching = false;
+        state.customer = action.payload;
+        console.log("actioncustomer ", action.payload);
+      })
+      .addCase(inforCustomer.rejected, (state, action) => {
+        state.isFetching = false;
+        state.error = action.payload;
       });
   },
 });
@@ -125,6 +138,27 @@ export const signUp = createAsyncThunk(
       console.log("error: ", error.response.data);
 
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const inforCustomer = createAsyncThunk(
+  "quanLyNguoiDung/inforCustomer",
+  async (data, { rejectWithValue }) => {
+    try {
+      const result = await axios({
+        url: "https://movienew.cybersoft.edu.vn/api/QuanLyNguoiDung/ThongTinTaiKhoan",
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + JSON.parse(localStorage.getItem("TOKEN")),
+          TokenCyberSoft:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCAzMkUiLCJIZXRIYW5TdHJpbmciOiIyMC8wMy8yMDIzIiwiSGV0SGFuVGltZSI6IjE2NzkyNzA0MDAwMDAiLCJuYmYiOjE2NTA0NzQwMDAsImV4cCI6MTY3OTQxODAwMH0.S7l5kogAVJjRW8mjJ5gosJraYq5ahYjrBwnMJAaGxlY",
+        },
+        data,
+      });
+      return result.data.content;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
     }
   }
 );

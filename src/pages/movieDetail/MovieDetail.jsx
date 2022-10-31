@@ -30,6 +30,11 @@ const MovieDetail = () => {
     setMode(e.target.value);
   };
 
+  const gettoken = () => {
+    console.log("local", localStorage.getItem("TOKEN"));
+  };
+  gettoken();
+
   return (
     <div className="container mx-auto h-[1200px] relative ">
       <div
