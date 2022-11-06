@@ -1,33 +1,41 @@
 import { FileImageOutlined } from "@ant-design/icons";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { themPhimUploadHinh } from "../../../store/quanLyPhim";
+import { useParams } from "react-router-dom";
+import {
+  getMovieDetail,
+  updateMovie,
+  useQuanLyPhim,
+} from "../../../store/quanLyPhim";
 
-const AddFilm = () => {
-  const [imgUpload, setImgUpload] = useState(null);
+const EditTip = () => {
+  const { movieDetail } = useQuanLyPhim();
+  const [imgUpload, setImgUpload] = useState("");
   const dispatch = useDispatch();
+  const params = useParams();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     mode: "onBlur",
-    defaultValues: {
-      tenPhim: "",
-      trailer: "",
-      moTa: "",
-      maNhom: "GP13",
-      ngayKhoiChieu: "",
-      sapChieu: false,
-      dangChieu: true,
-      hot: true,
-      danhGia: 5,
-      hinhAnh: null,
-    },
+    defaultValues: {},
   });
+
+  useEffect(() => {
+    dispatch(getMovieDetail(params.id));
+  }, []);
+  useEffect(() => {
+    reset({
+      ...movieDetail,
+      ngayKhoiChieu: moment(movieDetail?.ngayKhoiChieu).format("YYYY-MM-DD"),
+      hinhAnh: null,
+    });
+  }, [movieDetail]);
 
   const handleImg = (e) => {
     let file = e.target.files[0];
@@ -42,21 +50,24 @@ const AddFilm = () => {
 
   const onSubmit = (data) => {
     data.ngayKhoiChieu = moment(data.ngayKhoiChieu).format("DD-MM-YYYY");
-    console.log("data", data);
+    data.dangChieu = true;
+
     // Tạo đối tượng formdata
     let formData = new FormData();
     for (let key in data) {
       if (key !== "hinhAnh") {
         formData.append(key, data[key]);
       } else {
-        formData.append("File", data.hinhAnh[0], data.hinhAnh[0].name);
+        if (data.hinhAnh !== null) {
+          formData.append("File", data.hinhAnh[0], data.hinhAnh[0].name);
+        }
       }
     }
-    dispatch(themPhimUploadHinh(formData));
+    dispatch(updateMovie(formData));
   };
   return (
     <div>
-      <h3>Thêm phim mới</h3>
+      <h3>Cập nhật phim</h3>
       <form className="w-4/5 mx-auto" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 mb-6 w-full group">
@@ -89,7 +100,7 @@ const AddFilm = () => {
             <select
               id="maNhom"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              {...register("maNhom", {})}
+              {...register("maNhom")}
             >
               <option>GP00</option>
               <option>GP01</option>
@@ -196,22 +207,15 @@ const AddFilm = () => {
               id="hinhAnh"
               type="file"
               accept="image/jpeg, image/png"
-              {...register("hinhAnh", {
-                required: "Không được bỏ trống",
-              })}
+              {...register("hinhAnh")}
               onChange={handleImg}
             />
-            {imgUpload ? (
-              <img
-                width={150}
-                src={imgUpload}
-                alt="movie"
-                className="img-fluid rounded inline ml-3"
-              />
-            ) : (
-              <FileImageOutlined style={{ fontSize: 60 }} />
-            )}
 
+            <img
+              width={100}
+              src={imgUpload === "" ? movieDetail?.hinhAnh : imgUpload}
+              alt="..."
+            />
             {errors?.hinhAnh?.message && (
               <p className="text-red-400 mt-2">{errors?.hinhAnh?.message}</p>
             )}
@@ -229,7 +233,6 @@ const AddFilm = () => {
                 type="date"
                 id="tenPhim"
                 className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                placeholder="Ngày Khởi Chiếu"
                 {...register("ngayKhoiChieu", {
                   required: "Không được bỏ trống",
                 })}
@@ -242,31 +245,7 @@ const AddFilm = () => {
             </div>
           </div>
         </div>
-        <div className="grid md:grid-cols-3 md:gap-6">
-          <div className="relative z-0 mb-6 w-full group">
-            <div>
-              <label
-                htmlFor="toggle"
-                className="text-sm font-medium text-gray-900 dark:text-gray-300 mr-12"
-              >
-                Đang Chiếu:
-              </label>
-              <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                <input
-                  type="checkbox"
-                  name="dangChieu"
-                  id="dangChieu"
-                  className="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-2 appearance-none cursor-pointer"
-                  {...register("dangChieu")}
-                />
-                <label
-                  htmlFor="dangChieu"
-                  className="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer"
-                />
-              </div>
-            </div>
-          </div>
-
+        <div className="grid md:grid-cols-2 md:gap-6">
           <div className="relative z-0 mb-6 w-full group">
             <div>
               <label
@@ -326,4 +305,4 @@ const AddFilm = () => {
   );
 };
 
-export default AddFilm;
+export default EditTip;

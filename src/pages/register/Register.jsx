@@ -163,7 +163,7 @@ const Register = () => {
                     {...register("email", {
                       required: "Không được bỏ trống",
                       pattern: {
-                        value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                        value: /^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/,
                         message: "Email không đúng định dạng",
                       },
                     })}
@@ -184,7 +184,7 @@ const Register = () => {
                       required: "Không được bỏ trống",
                       pattern: {
                         value:
-                          /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/,
+                          /^[]?[(]?[0-9]{3}[)]?[-\s]?[0-9]{3}[-\s]?[0-9]{4}$/,
                         message: "Số điện thoại không đúng",
                       },
                     })}

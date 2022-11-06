@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./AdminLayout.css";
+import "./UserLayout.css";
 
-import { PieChartOutlined, VideoCameraOutlined } from "@ant-design/icons";
+import {
+  FileDoneOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from "@ant-design/icons";
 import { Breadcrumb, Layout, Dropdown, Menu, Space } from "antd";
 
 // import React, { useState } from "react";
@@ -31,25 +35,22 @@ const items = [
     </NavLink>,
     "1"
   ),
-  getItem("Users", "2", <PieChartOutlined />, [
-    getItem(<NavLink to="/admin/user">User List</NavLink>, "21"),
-    getItem(<NavLink to="/admin/user/addedituser">Add User</NavLink>, "22"),
-  ]),
+  getItem(<NavLink to="/user/info">Tài khoản</NavLink>, "11", <UserOutlined />),
 
-  getItem("Film Manager", "3", <VideoCameraOutlined />, [
-    getItem(<NavLink to="/admin/films">Films</NavLink>, "31"),
-    getItem(<NavLink to="/admin/films/addfilm">Add Film</NavLink>, "32"),
-  ]),
+  getItem(
+    <NavLink to="/user/ticketinfor">Thông tin vé</NavLink>,
+    "2",
+    <FileDoneOutlined />
+  ),
 ];
 
-const AdminLayout = () => {
+const UserLayout = () => {
   const { userLogin } = useQuanLyNguoiDung();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!userLogin) {
-      console.log("gì dọ");
       navigate("/home");
     }
   }, [userLogin]);
@@ -85,6 +86,7 @@ const AdminLayout = () => {
     {
       label: <span onClick={dangXuat}>Đăng xuất</span>,
       key: "3",
+      // disabled: true,
     },
   ];
   const menu = <Menu items={item} />;
@@ -199,4 +201,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default UserLayout;

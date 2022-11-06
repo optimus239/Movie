@@ -1,27 +1,27 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Button, Input, Space, Table } from "antd";
-import {
-  getMovieList,
-  useQuanLyPhim,
-  xoaPhim,
-} from "../../../store/quanLyPhim";
-import { useDispatch } from "react-redux";
 import {
   SearchOutlined,
-  DeleteOutlined,
   EditOutlined,
-  FundProjectionScreenOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
-import { removeVietnameseTones } from "../../../ultis/convertAlphabetToAlphanumeric";
-import { NavLink } from "react-router-dom";
+import { Button, Input, Space, Table } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
+import {
+  danhSachNguoiDung,
+  useQuanLyNguoiDung,
+  xoaNguoiDung,
+} from "../../../store/quanLyNguoiDung";
+import { removeVietnameseTones } from "../../../ultis/convertAlphabetToAlphanumeric";
 
-const Films = () => {
-  const { movieList } = useQuanLyPhim();
+const User = () => {
+  const { userList } = useQuanLyNguoiDung();
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getMovieList());
+    dispatch(danhSachNguoiDung());
   }, []);
 
   const [searchText, setSearchText] = useState("");
@@ -36,7 +36,6 @@ const Films = () => {
     clearFilters();
     setSearchText("");
   };
-
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -115,61 +114,98 @@ const Films = () => {
         text
       ),
   });
-
   const columns = [
     {
-      title: "Mã Phim",
-      dataIndex: "maPhim",
-      width: 130,
-      key: "maPhim",
-      ...getColumnSearchProps("maPhim"),
-      // specify the condition of filtering result
-      // here is that finding the name started with `value`
-
-      sorter: (a, b) => a.maPhim - b.maPhim,
-      defaultSortOrder: "descend",
-      sortDirections: ["ascend", "descend", "ascend"],
+      title: "STT",
+      dataIndex: "stt",
+      key: "stt",
+      width: "5%",
+      //   ...getColumnSearchProps("name"),
     },
     {
-      title: "Hình Ảnh",
-      width: 100,
-      dataIndex: "hinhAnh",
-      render: (text, record, index) => {
-        return <img width={30} src={text} alt="tenPhim" />;
-      },
-    },
-    {
-      title: "Tên Phim",
-      dataIndex: "tenPhim",
-      width: 200,
-      key: "tenPhim",
-      ...getColumnSearchProps("tenPhim"),
-      // onFilter: (value, record) => record.tenPhim.indexOf(value) === 0,
+      title: "Tài khoản",
+      dataIndex: "taiKhoan",
+      key: "taiKhoan",
+      width: "10%",
       sorter: (a, b) => {
-        let tenPhimA = removeVietnameseTones(a.tenPhim.toLowerCase());
-        let tenPhimB = removeVietnameseTones(b.tenPhim.toLowerCase());
-        if (tenPhimA > tenPhimB) {
+        let taiKhoanA = removeVietnameseTones(a.taiKhoan.toLowerCase());
+        let taiKhoanB = removeVietnameseTones(b.taiKhoan.toLowerCase());
+        if (taiKhoanA > taiKhoanB) {
           return 1;
         }
         return -1;
       },
       sortDirections: ["ascend", "descend", "ascend"],
+      ...getColumnSearchProps("taiKhoan"),
     },
     {
-      title: "Mô Tả",
-      dataIndex: "moTa",
-      render: (text, record, index) => {
-        return text.length > 50 ? text.substr(0, 50) + "..." : text;
+      title: "Mật khẩu",
+      dataIndex: "matKhau",
+      key: "matKhau",
+      width: "10%",
+      //   ...getColumnSearchProps("address"),
+      //   sorter: (a, b) => a.address.length - b.address.length,
+      //   sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Họ tên",
+      dataIndex: "hoTen",
+      key: "hoTen",
+      width: "10%",
+      sorter: (a, b) => {
+        let hoTenA = removeVietnameseTones(a.hoTen.toLowerCase());
+        let hoTenB = removeVietnameseTones(b.hoTen.toLowerCase());
+        if (hoTenA > hoTenB) {
+          return 1;
+        }
+        return -1;
       },
+      sortDirections: ["ascend", "descend", "ascend"],
+      ...getColumnSearchProps("hoTen"),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      width: "10%",
+      ...getColumnSearchProps("email"),
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "soDT",
+      key: "soDT",
+      width: "10%",
+      //   ...getColumnSearchProps("age"),
+    },
+    {
+      title: "Loại người dùng",
+      dataIndex: "maLoaiNguoiDung",
+      key: "maLoaiNguoiDung",
+      //   width: "10%",
+      sorter: (a, b) => {
+        let maLoaiNguoiDungA = removeVietnameseTones(
+          a.maLoaiNguoiDung.toLowerCase()
+        );
+        let maLoaiNguoiDungB = removeVietnameseTones(
+          b.maLoaiNguoiDung.toLowerCase()
+        );
+        if (maLoaiNguoiDungA > maLoaiNguoiDungB) {
+          return 1;
+        }
+        return -1;
+      },
+      sortDirections: ["ascend", "descend", "ascend"],
+      //   ...getColumnSearchProps("age"),
     },
     {
       title: "Hành động",
-      dataIndex: "maPhim",
+      //   dataIndex: "maPhim",
+      width: "10%",
       render: (text, record, index) => {
         return (
           <div>
             <NavLink
-              to={`edit/${record.maPhim}`}
+              to={`addedituser/${record.taiKhoan}`}
               className="text-xl text-green-400 hover:text-red-400 mr-2"
             >
               <EditOutlined />
@@ -179,49 +215,39 @@ const Films = () => {
               className="text-xl text-gray-400 hover:text-red-400 mr-2"
               onClick={() => {
                 Swal.fire({
-                  title: "Bạn có muốn xóa phim?",
-                  text: "Bạn sẽ không thể khôi phục lại phim đã xóa!",
+                  title: "Xóa tài khoản người dùng?",
+                  text: "Bạn sẽ không thể khôi phục lại!",
                   icon: "warning",
                   showCancelButton: true,
                   confirmButtonColor: "#3085d6",
                   cancelButtonColor: "#d33",
-                  confirmButtonText: "Xóa phim!",
+                  confirmButtonText: "Xóa người dùng!",
                 }).then((result) => {
                   if (result.isConfirmed) {
-                    dispatch(xoaPhim(record.maPhim));
+                    dispatch(xoaNguoiDung(record.taiKhoan));
                   }
                 });
               }}
             >
               <DeleteOutlined />
             </span>
-            <NavLink
-              to={`showtime/${record.maPhim}`}
-              className="text-xl text-blue-400 hover:text-red-400"
-              onClick={() => {
-                localStorage.setItem("filmparams", JSON.stringify(record));
-              }}
-            >
-              <FundProjectionScreenOutlined />
-            </NavLink>
           </div>
         );
       },
     },
   ];
-  const data = movieList;
-
+  const data = userList.map((item, index) => ({ ...item, stt: index + 1 }));
   return (
     <div>
-      <h3>Quản Lý Phim</h3>
-      <NavLink to={"/admin/films/addfilm"}>
+      <h3>Quản Lý User</h3>
+      <NavLink to={"/admin/user/addedituser"}>
         <Button type="primary" className="mb-2 hover:text-blue-500">
-          Thêm mới phim
+          Thêm người dùng
         </Button>
       </NavLink>
-      <Table rowKey="maPhim" columns={columns} dataSource={data} />
+      <Table rowKey="taiKhoan" columns={columns} dataSource={data} />;
     </div>
   );
 };
 
-export default Films;
+export default User;

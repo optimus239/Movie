@@ -44,11 +44,11 @@ export const { reducer: quanLyRapReducer, actions: quanLyRapActions } =
   });
 
 export const getCinemaList = createAsyncThunk(
-  "quanLyRap/getCinameList",
+  "quanLyRap/getCinemeList",
   async (data, { rejectWithValue }) => {
     try {
       const result = await axios({
-        url: "https://movienew.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01",
+        url: "https://movienew.cybersoft.edu.vn/api/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP13",
         method: "GET",
         headers: {
           TokenCyberSoft:
